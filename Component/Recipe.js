@@ -162,15 +162,16 @@ const styles = StyleSheet.create({
   cardTextStyle: {
     fontSize: 20,
     fontWeight: "bold",
-    top: 5,
     paddingLeft: 15,
     color: "white",
     ...Platform.select({
         ios: {
           fontFamily: 'Baskerville-SemiBold',
+          top: 5,
         },
         android: {
-          fontFamily: 'monospace',
+          fontFamily: 'sans-serif-condensed',
+          top: 0,
         }
     }),
   },
