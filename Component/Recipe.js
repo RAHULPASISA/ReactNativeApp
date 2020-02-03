@@ -11,6 +11,7 @@ import {
   Alert,
   TouchableWithoutFeedback
 } from "react-native";
+import {Platform} from 'react-native';
 
 export default class Recipe extends Component {
   constructor() {
@@ -164,7 +165,14 @@ const styles = StyleSheet.create({
     top: 5,
     paddingLeft: 15,
     color: "white",
-    fontFamily: 'Baskerville-SemiBold'
+    ...Platform.select({
+        ios: {
+          fontFamily: 'Baskerville-SemiBold',
+        },
+        android: {
+          fontFamily: 'monospace',
+        }
+    }),
   },
   cardViewStyle: {
     width: "95%",
