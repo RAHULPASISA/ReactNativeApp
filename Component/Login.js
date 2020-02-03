@@ -5,16 +5,16 @@ import {
   View,
   ImageBackground,
   TextInput,
-  Button,
   Alert,
   TouchableOpacity,
   Image
 } from "react-native";
+import Recipe from './Recipe'
 
 export default class Login extends Component {
   constructor() {
     super();
-    this.state = { username: "", password: "" };
+    this.state = { username: "jm1@example.com", password: "jay@123", token: null };
   }
 
   Login = () => {
@@ -53,21 +53,23 @@ export default class Login extends Component {
             }
           ]);
         } else {
+          console.log(responseJSON.token)
+          this.setState({token:responseJSON.token})
           try {
-            var email = responseJSON["email"];
-            if (email) {
-              console.log("success: ", responseJSON);
-            }
-            var message = email
-              ? "You are successfully logged in"
-              : "There was an error with your E-Mail/Password. Please try again.";
-            var title = email ? "Success" : "Failure";
-            Alert.alert(title, message, [
-              {
-                text: "Okay",
-                style: "cancel"
-              }
-            ]);
+            // var email = responseJSON["email"];
+            // if (email) {
+            //   console.log("success: ", responseJSON);
+            // }
+            // var message = email
+            //   ? "You are successfully logged in"
+            //   : "There was an error with your E-Mail/Password. Please try again.";
+            // var title = email ? "Success" : "Failure";
+            // Alert.alert(title, message, [
+            //   {
+            //     text: "Okay",
+            //     style: "cancel"
+            //   }
+            // ]);
           } catch (err) {
             console.log("error");
             var message = "There was an error with your E-Mail/Password. Please try again.";
@@ -84,54 +86,57 @@ export default class Login extends Component {
   };
 
   render() {
-    return (
-      <ImageBackground
-        source={require('../assets/plane.gif')}
-        style={{ width: "100%", height: "100%", resizeMode: "resize" }}
-      >
-        <View style={styles.container}>
-          <View style={styles.firstView}>
-            <Image
-              source={require('../assets/logo.png')}
-              style={{ width: 140, height: 125 }}
-            />
+    if (this.state.token != null) {
+     return <Recipe token={this.state.token} />
+    }else {
+      return (
+        <ImageBackground
+          source={require('../assets/Cook.gif')}
+          style={{ width: "100%", height: "100%", resizeMode: "resize" }}
+        >
+          <View style={styles.container}>
+            <View style={styles.firstView}>
+              <Image
+                source={require('../assets/logo.png')}
+                style={{ width: 140, height: 125 }}
+              />
+            </View>
+            <View style={styles.secondView}>
+              <TextInput
+                placeholder="Email"
+                placeholderTextColor="#FFF"
+                keyboardType="email-address"
+                value={this.state.username}
+                onChangeText={username => this.setState({ username })}
+                style={styles.usernameTextInput}
+              ></TextInput>
+              <TextInput
+                placeholder="Password"
+                placeholderTextColor="#FFF"
+                secureTextEntry='true'
+                value={this.state.password}
+                onChangeText={password => this.setState({ password })}
+                style={styles.passwordTextInput}
+              ></TextInput>
+            </View>
+            <View style={styles.thirdView}>
+              <TouchableOpacity onPress={this.Login} style={styles.buttonLogin}>
+                <Text   
+                  style={{
+                    color: "white",
+                    justifyContent: "center",
+                    fontSize: 20,
+                    fontWeight: "bold"
+                  }}
+                >
+                Login
+                </Text>
+              </TouchableOpacity>
+            </View>
           </View>
-          <View style={styles.secondView}>
-            <TextInput
-              placeholder="Email"
-              placeholderTextColor="#FFF"
-              keyboardType="email-address"
-              value={this.state.username}
-              onChangeText={username => this.setState({ username })}
-              style={styles.usernameTextInput}
-            ></TextInput>
-            <TextInput
-              placeholder="Password"
-              placeholderTextColor="#FFF"
-              secureTextEntry='true'
-              value={this.state.password}
-              onChangeText={password => this.setState({ password })}
-              style={styles.passwordTextInput}
-            ></TextInput>
-          </View>
-          <View style={styles.thirdView}>
-            <TouchableOpacity onPress={this.Login} style={styles.buttonLogin}>
-              <Text
-                style={{
-                  color: "white",
-                  justifyContent: "center",
-                  fontSize: 20,
-                  fontWeight: "bold"
-                }}
-              >
-                {" "}
-                Login{" "}
-              </Text>
-            </TouchableOpacity>
-          </View>
-        </View>
-      </ImageBackground>
-    );
+        </ImageBackground>
+      );
+    }
   }
 }
 
@@ -191,6 +196,6 @@ const styles = StyleSheet.create({
     alignItems: "center",
     borderWidth: 1,
     borderColor: "white",
-    borderRadius: 10
+    borderRadius: 10,
   }
 });

@@ -9,7 +9,7 @@ import {
   SafeAreaView,
   RefreshControl,
   Alert,
-  Image
+  TouchableWithoutFeedback
 } from "react-native";
 
 export default class Recipe extends Component {
@@ -25,7 +25,7 @@ export default class Recipe extends Component {
   Recipe = () => {
     const url = "http://35.160.197.175:3006/api/v1/recipe/cooking-list";
     const tokenFromLogin =
-      "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6Mn0.MGBf-reNrHdQuwQzRDDNPMo5oWv4GlZKlDShFAAe16s";
+      'Bearer ' + this.props.token
 
     fetch(url, {
       method: "GET",
@@ -56,6 +56,7 @@ export default class Recipe extends Component {
 
   renderItem = ({ item }) => {
     return (
+      <TouchableWithoutFeedback onPress={ () => this.actionOnRow(item)}>
         <View style={styles.cardViewStyle}>
           <ImageBackground
             style={{ width: "100%", height: "100%",  justifyContent: 'flex-end', alignItems: 'flex-end' }}
@@ -63,8 +64,8 @@ export default class Recipe extends Component {
             imageStyle={{ borderRadius: 10 }}
           >
             <ImageBackground 
-            blurRadius = {18} style={styles.blurImage}
-            imageStyle={{ borderRadius: 10 }}
+            blurRadius = {22} style={styles.blurImage}
+            imageStyle={{ borderBottomLeftRadius: 10, borderBottomRightRadius: 10}}
             source={this.blurTextBackground(item.photo)}>  
             <Text style={styles.cardTextStyle}>
               Full Name : {item.firstName} {item.lastName}
@@ -78,8 +79,15 @@ export default class Recipe extends Component {
              </ImageBackground>
           </ImageBackground>
         </View>
+      </TouchableWithoutFeedback>
+
+        
     );
   };
+
+  actionOnRow(item) {
+    console.log('Selected Item :',item);
+ }
 
   checkImageURLNull(url) {
     console.log(url);
@@ -93,7 +101,6 @@ export default class Recipe extends Component {
   blurTextBackground(url) {
     if (url == null) {
       return {uri: 'http://35.160.197.175:3006/uploads/346e7d17-515a-4908-b3d0-5b4136a56b7c.jpg'}
-        // 'http://35.160.197.175:3006/uploads/b578afed-2ea1-451b-954e-30f03b37a85f.jpg'};
     } else {
       return {uri: url};
     }
@@ -171,6 +178,7 @@ const styles = StyleSheet.create({
     width: '100%',
     height: 80,
     justifyContent: 'flex-start', 
-    alignItems: 'flex-start'
+    alignItems: 'flex-start',
    }
 });
+

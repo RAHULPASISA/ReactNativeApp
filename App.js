@@ -5,6 +5,6 @@ import Recipe from "./Component/Recipe"
 
 export default function App() {
   return (
-    <Recipe />
+    <Login />
   );
 }
