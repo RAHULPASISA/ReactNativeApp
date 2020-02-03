@@ -124,7 +124,7 @@ export default class Recipe extends Component {
               <RefreshControl 
               onRefresh={() => this.onRefresh()}
               refreshing={this.state.isRefreshing}
-              title="Loading..."
+              title="Loading"
               />
             }
           />
@@ -159,7 +159,6 @@ const styles = StyleSheet.create({
   blurImage: {
     width: '100%',
     height: 80,
-    // backgroundColor: 'red',
     justifyContent: 'flex-start', 
     alignItems: 'flex-start'
    }
