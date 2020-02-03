@@ -63,8 +63,9 @@ export default class Recipe extends Component {
             imageStyle={{ borderRadius: 10 }}
           >
             <ImageBackground 
-            blurRadius = {100} style={styles.blurImage}
-            source={this.checkImageURLNull(item.photo)}>  
+            blurRadius = {18} style={styles.blurImage}
+            imageStyle={{ borderRadius: 10 }}
+            source={this.blurTextBackground(item.photo)}>  
             <Text style={styles.cardTextStyle}>
               Full Name : {item.firstName} {item.lastName}
             </Text>
@@ -84,6 +85,15 @@ export default class Recipe extends Component {
     console.log(url);
     if (url == null) {
       return require('../assets/Cook.gif')
+    } else {
+      return {uri: url};
+    }
+  }
+
+  blurTextBackground(url) {
+    if (url == null) {
+      return {uri: 'http://35.160.197.175:3006/uploads/346e7d17-515a-4908-b3d0-5b4136a56b7c.jpg'}
+        // 'http://35.160.197.175:3006/uploads/b578afed-2ea1-451b-954e-30f03b37a85f.jpg'};
     } else {
       return {uri: url};
     }
@@ -124,7 +134,7 @@ export default class Recipe extends Component {
               <RefreshControl 
               onRefresh={() => this.onRefresh()}
               refreshing={this.state.isRefreshing}
-              title=""
+              title="Loading..."
               />
             }
           />
@@ -146,7 +156,8 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     top: 5,
     paddingLeft: 15,
-    color: "white"
+    color: "white",
+    fontFamily: 'Baskerville-SemiBold'
   },
   cardViewStyle: {
     width: "95%",

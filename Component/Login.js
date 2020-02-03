@@ -39,14 +39,14 @@ export default class Login extends Component {
       .then(responseJSON => {
         this.setState({ showProcess: false });
         if (this.state.username.length == 0) {
-          Alert.alert("Email", "Email is require", [
+          Alert.alert("Email", "The email you entered is incorrect", [
             {
               text: "Okay",
               style: "cancel"
             }
           ]);
         } else if (this.state.password.length == 0) {
-          Alert.alert("Password", "Password is require", [
+          Alert.alert("Password", "The password you entered is incorrect", [
             {
               text: "Okay",
               style: "cancel"
@@ -59,8 +59,8 @@ export default class Login extends Component {
               console.log("success: ", responseJSON);
             }
             var message = email
-              ? "You have successfully logged in"
-              : "Your user name or password are wrong";
+              ? "You are successfully logged in"
+              : "There was an error with your E-Mail/Password. Please try again.";
             var title = email ? "Success" : "Failure";
             Alert.alert(title, message, [
               {
@@ -70,7 +70,7 @@ export default class Login extends Component {
             ]);
           } catch (err) {
             console.log("error");
-            var message = "Your user name or password are wrong";
+            var message = "There was an error with your E-Mail/Password. Please try again.";
             var title = "Failure";
             Alert.alert(title, message, [
               {
