@@ -124,7 +124,7 @@ export default class Recipe extends Component {
               <RefreshControl 
               onRefresh={() => this.onRefresh()}
               refreshing={this.state.isRefreshing}
-              title="Loading"
+              title=""
               />
             }
           />
