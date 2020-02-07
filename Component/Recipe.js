@@ -9,13 +9,16 @@ import {
   SafeAreaView,
   RefreshControl,
   Alert,
-  TouchableWithoutFeedback
+  TouchableWithoutFeedback,
+  Button,
+  Image
 } from "react-native";
 import {Platform} from 'react-native';
 
 export default class Recipe extends Component {
-  constructor() {
-    super();
+ 
+  constructor(props) {
+    super(props);
     this.state = {
       isLoading: true,
       dataSource: [],
@@ -23,10 +26,43 @@ export default class Recipe extends Component {
     };
   }
 
+  static navigationOptions =  ({ navigation })=> {
+    return {
+    title: 'Recipe List',
+    headerTitleAlign: 'center',
+    headerBackImage: null,
+    headerBackTitleVisible: false,
+    headerRightImage: (
+      <Image
+        style={StyleSheet.absoluteFill}
+        source={{ uri: 'http://35.160.197.175:3006/uploads/d3da38ab-df97-49a8-9485-8955eb0deb80.jpg' }}
+      />
+    ),
+    // headerStyle: {
+    //     height: 100,
+    //     backgroundColor: 'rgba(240, 240, 246, 1)',
+    //   },
+    //   headerTintColor: 'black',
+    //   headerTitleStyle: {
+    //     fontFamily: 'TimesNewRomanPS-BoldMT',
+    //     fontSize: 30
+    //   },
+    headerRight: () => (
+        <Button
+          // style= {styles.addButtonStyleNavigation}
+          onPress={() => navigation.navigate('AddRecipe')}
+          title="Add"
+          //color="black"
+        />
+      )
+    
+    }
+}
+
   Recipe = () => {
     const url = "http://35.160.197.175:3006/api/v1/recipe/cooking-list";
     const tokenFromLogin =
-      'Bearer ' + this.props.token
+      'Bearer ' + this.props.navigation.getParam('token')   
 
     fetch(url, {
       method: "GET",
@@ -88,6 +124,7 @@ export default class Recipe extends Component {
 
   actionOnRow(item) {
     console.log('Selected Item :',item);
+    this.props.navigation.navigate('DetailRecipe',{selectItem: JSON.stringify(item)})
  }
 
   checkImageURLNull(url) {

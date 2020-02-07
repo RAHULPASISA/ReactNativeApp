@@ -54,8 +54,9 @@ export default class Login extends Component {
           ]);
         } else {
           console.log(responseJSON.token)
-          this.setState({token:responseJSON.token})
-          try {
+          this.setState({token:responseJSON.token});
+          this.props.navigation.navigate('Recipe',{token: this.state.token})
+      try {
             // var email = responseJSON["email"];
             // if (email) {
             //   console.log("success: ", responseJSON);
@@ -86,9 +87,9 @@ export default class Login extends Component {
   };
 
   render() {
-    if (this.state.token != null) {
-     return <Recipe token={this.state.token} />
-    }else {
+    // if (this.state.token != null) {
+    //  return <Recipe token={this.state.token} />
+    // }else {
       return (
         <ImageBackground
           source={require('../assets/Cook.gif')}
@@ -136,7 +137,7 @@ export default class Login extends Component {
           </View>
         </ImageBackground>
       );
-    }
+    // }
   }
 }
 
