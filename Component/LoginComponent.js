@@ -9,9 +9,9 @@ import {
   TouchableOpacity,
   Image
 } from "react-native";
-import Recipe from './Recipe'
+import Recipe from './RecipeListComponent'
 
-export default class Login extends Component {
+export default class LoginComponent extends Component {
   constructor() {
     super();
     this.state = { username: "jm1@example.com", password: "jay@123", token: null };

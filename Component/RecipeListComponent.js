@@ -15,7 +15,7 @@ import {
 } from "react-native";
 import {Platform} from 'react-native';
 
-export default class Recipe extends Component {
+export default class RecipeListComponent extends Component {
  
   constructor(props) {
     super(props);
@@ -60,7 +60,7 @@ export default class Recipe extends Component {
 }
 
   Recipe = () => {
-    const url = "http://35.160.197.175:3006/api/v1/recipe/cooking-list";
+    const url = "http://35.160.197.175:3006/api/v1/recipe/feeds";
     const tokenFromLogin =
       'Bearer ' + this.props.navigation.getParam('token')   
 
@@ -105,7 +105,8 @@ export default class Recipe extends Component {
             imageStyle={{ borderBottomLeftRadius: 10, borderBottomRightRadius: 10}}
             source={this.blurTextBackground(item.photo)}>  
             <Text style={styles.cardTextStyle}>
-              Full Name : {item.firstName} {item.lastName}
+              {/* Full Name : {item.firstName} {item.lastName} */}
+            Name : {item.name}
             </Text>
             <Text style={styles.cardTextStyle}>
               Complexity : {item.complexity}

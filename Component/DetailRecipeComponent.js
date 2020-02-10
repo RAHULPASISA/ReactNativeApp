@@ -3,7 +3,7 @@ import { StyleSheet, Text, View, Image, ImageBackground } from "react-native";
 import { Dimensions } from "react-native";
 import { Platform } from "react-native";
 
-export default class DetailRecipe extends Component {
+export default class DetailRecipeComponent extends Component {
   constructor() {
     super();
     const screenWidth = Math.round(Dimensions.get("window").width);
@@ -18,6 +18,15 @@ export default class DetailRecipe extends Component {
     title: "Detail Recipe",
   };
 
+  checkImageURLNull(url) {
+    console.log(url);
+    if (url == null) {
+      return require('../assets/Cook.gif')
+    } else {
+      return {uri: url};
+    }
+  }
+
   render() {
     const setData = JSON.parse(
       this.props.navigation.state["params"]["selectItem"]
@@ -29,7 +38,7 @@ export default class DetailRecipe extends Component {
     return (
       <View style={styles.container}>
         <ImageBackground
-          source={{ uri: setImgData }}
+          source={this.checkImageURLNull(setImgData)}
           style={{
             width: this.state.screenWidth,
             height: this.state.screenHeight / 2,
