@@ -33,7 +33,11 @@ const tabbarNavigator = createBottomTabNavigator({
 }, {
   tabBarOptions: {
     activeTintColor: 'rgba(0,182,524,1)',
+  }, 
+  navigationOptions:{
+    headerShown: false
   }
+  
 })
 
 // tabbarNavigator.navigationOptions = ({ navigation }) => {
@@ -52,7 +56,7 @@ const tabbarNavigator = createBottomTabNavigator({
 const detailNavigation = createStackNavigator({
   tabbarNavigator,
   DetailRecipe: { screen: DetailRecipe , navigationOptions:{ ...TransitionPresets.SlideFromRightIOS}},
-  AddRecipe: { screen: AddRecipe, navigationOptions: { ...TransitionPresets.ModalPresentationIOS } }
+  AddRecipe: { screen: AddRecipe}, //navigationOptions: { ...TransitionPresets.ModalPresentationIOS } 
 });
 
 const navigate = createSwitchNavigator({

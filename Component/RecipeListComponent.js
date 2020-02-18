@@ -170,7 +170,16 @@ export default class RecipeListComponent extends Component {
     } else {
       return (
         <View style={styles.container}>
-          <SafeAreaView>
+          <SafeAreaView style={{ flex:1,backgroundColor:'white'}}>
+          <View style={{flexDirection:"row", backgroundColor:"white", height:44,justifyContent:'center',alignItems:'center',borderBottomWidth:1,borderBottomColor:'rgba(231,231,232,1)'}}>
+            <Text style={{color:'red'}}>hello</Text>
+            <Button
+          // style= {styles.addButtonStyleNavigation}
+          onPress={() => this.props.navigation.navigate('AddRecipe')}
+          title="Add"
+          //color="black"
+        />
+          </View>
           <FlatList
             data={this.state.dataSource}
             renderItem={this.renderItem}
