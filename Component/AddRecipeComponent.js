@@ -1,24 +1,102 @@
 import React, { Component } from "react";
-import { StyleSheet, Text, View, Alert, TouchableOpacity } from "react-native";
+import {
+  StyleSheet,
+  Text,
+  View,
+  Alert,
+  TouchableOpacity,
+  Image,
+  ActivityIndicator
+} from "react-native";
 import { TextInput } from "react-native-gesture-handler";
 import { Dropdown } from "react-native-material-dropdown";
+import * as ImagePicker from "expo-image-picker";
+import * as Permissions from "expo-permissions";
+
+const complexityData = [
+  {
+    value: "Easy"
+  },
+  {
+    value: "Medium"
+  },
+  {
+    value: "Complex"
+  }
+];
 
 export default class AddRecipeComponent extends Component {
   constructor() {
     super();
     this.state = {
+      isLoading: false,
       name: "Pizza",
       preparationTime: "1 Hour",
       serves: "4",
-      complexity: "",
-      token: null
+      complexity: complexityData[0].value,
+      token: null,
+      image: null
     };
   }
 
+  static navigationOptions = {
+    headers:null
+  };
+
+  getImagePermissions = async () => {
+    const { status } = await Permissions.askAsync(Permissions.CAMERA_ROLL);
+    if (status !== "granted") {
+      alert("Sorry, we need camera roll permissions to make this work!");
+    }else {
+      this.clickedOnImage();
+    }
+  };
+
+  clickedOnImage = async () => {
+    let result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.All,
+      allowsEditing: true,
+      aspect: [1, 1],
+      quality: 1
+    });
+    console.log(result);
+
+    if (!result.cancelled) {
+      this.setState({ image: result.uri });
+    } else {
+      console.log("Image picker Cancelled");
+    }
+  };
+
+showLoadingIndicator() {
+  // if (this.state.isLoading) {
+    <View
+      style={{
+        position: "absolute",
+        width: "100%",
+        height: "110%",
+        zIndex: 1
+      }}
+    >
+      <ActivityIndicator
+        size="large"
+        color="gray"
+        style={{ flex: 1 }}
+        animating={this.state.isLoading} 
+      ></ActivityIndicator>
+    </View>
+// }else {
+  
+// }
+}
   addRecipe = () => {
-    console.log('Rahul ', this.state.complexity);
-    
-    const { goBack } = this.props.navigation;
+    // console.log("Rahul ", this.state.complexity);
+
+    this.setState({
+      isLoading: true,
+    });
+  this.showLoadingIndicator();
+
     fetch("http://35.160.197.175:3006/api/v1/recipe/add", {
       method: "POST",
       headers: {
@@ -40,33 +118,90 @@ export default class AddRecipeComponent extends Component {
         }
       })
       .then(responseJson => {
-        Alert.alert("Success", "Data added successfully", [
-          {
-            text: "Okay",
-            onPress: () => goBack(),
-            style: "cancel"
-          }
-        ]);
+        if (responseJson.error != null) {
+          Alert.error('ERROR', responseJson.error)
+      }
+      else {
+          console.log(responseJson);
+          this.uploadImage(responseJson.id)
+       //   this.props.navigation.goBack()
+      }
+        // Alert.alert("Success", "Data added successfully", [
+        //   {
+        //     text: "Okay",
+        //     onPress: () => goBack(),
+        //     style: "cancel"
+        //   }
+        // ]);
       })
       .catch(error => {
         Alert.alert("ERROR", error);
       });
   };
 
+  uploadImage(id) {
+    var photo = {
+        uri : this.state.image ,
+        type : 'image/jpeg',
+        name : 'photo.jpg'
+    }
+    const { goBack } = this.props.navigation;
+
+    var formData = new FormData();
+    formData.append('photo', photo)
+    formData.append('recipeId', id)
+
+    fetch('http://35.160.197.175:3006/api/v1/recipe/add-update-recipe-photo',{
+        method: 'POST',
+        headers: {
+            'Authorization': 'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6Mn0.MGBf-reNrHdQuwQzRDDNPMo5oWv4GlZKlDShFAAe16s',
+            'Content-Type' : 'application/json'
+        },
+        body: formData
+    }).then((responseJson) => {
+      this.setState({
+        isLoading: false,
+      });
+    this.showLoadingIndicator();
+        Alert.alert('Success','Recipe added',[
+            {
+                text: 'Okay',
+                style: 'cancel',
+                onPress: () => goBack(),
+            }
+        ])
+    }).catch((error) => {
+        Alert.alert('Upload Image Failed')
+    })
+}
+
   render() {
-    complexityData = [
-      {
-        value: "Medium"
-      },
-      {
-        value: "Easy"
-      },
-      {
-        value: "Complex"
-      }
-    ];
     return (
       <View style={styles.container}>
+        <TouchableOpacity
+          onPress={() => {
+            this.getImagePermissions();
+          }}
+         style={{ backgroundColor: 'white', height: 100, width: 100, margin: 20 }}
+        >
+          {this.state.image ? (
+            <Image source={{ uri: this.state.image }} style={{ flex: 1 }} />
+          ) : (
+            <View
+              style={{
+                flex: 1,
+                alignItems: "center",
+                justifyContent: "center",
+              }}
+            >
+              <Image
+                source={require("../assets/add_Image.png")}
+                style={{ width: "100%", height: "100%", resizeMode: "cover" }}
+              />
+            </View>
+          )}
+        </TouchableOpacity>
+
         <TextInput
           placeholder={"Enter Item Name"}
           value={this.state.name}
@@ -86,17 +221,18 @@ export default class AddRecipeComponent extends Component {
           onChangeText={serves => this.setState({ serves })}
           style={[styles.textInputStyle, , styles.spaceBetweenTxtfield]}
         ></TextInput>
-         <View style={[styles.dropDownStyle, { width: '90%', marginTop: 75 }]}>
-                            <Dropdown
-                                label="Complexity"
-                                ref={"dropdownComplexity"}
-                                animationDuration={100}
-                                containerStyle={{ marginTop: 10 }}
-                                dropdownOffset={{ top: 0, left: 0 }}
-                                rippleInsets={{ top: 0, bottom: 0 }}
-                                value={this.state.complexity}
-                                data={complexityData} />
-                        </View>
+        <View style={[styles.dropDownStyle, { width: "90%", marginTop: 75 }]}>
+          <Dropdown
+            label="Complexity"
+            ref={"dropdownComplexity"}
+            animationDuration={100}
+            containerStyle={{ marginTop: 10 }}
+            dropdownOffset={{ top: 0, left: 0 }}
+            rippleInsets={{ top: 0, bottom: 0 }}
+            value={this.state.complexity}
+            data={complexityData}
+          />
+        </View>
         <TouchableOpacity onPress={this.addRecipe} style={styles.buttonLogin}>
           <Text
             style={{

@@ -10,7 +10,7 @@ import {
   RefreshControl,
   Alert,
   TouchableWithoutFeedback,
-  Button,
+   Button,
   Image
 } from "react-native";
 import {Platform} from 'react-native';
@@ -172,7 +172,7 @@ export default class RecipeListComponent extends Component {
         <View style={styles.container}>
           <SafeAreaView style={{ flex:1,backgroundColor:'white'}}>
           <View style={{flexDirection:"row", backgroundColor:"white", height:44,justifyContent:'center',alignItems:'center',borderBottomWidth:1,borderBottomColor:'rgba(231,231,232,1)'}}>
-            <Text style={{color:'red'}}>hello</Text>
+            <Text style={{color:'black',flex:1,paddingLeft:50,textAlign:'center',alignSelf:'center',backgroundColor:"white", fontSize: 18,fontWeight:'bold'}}>Recipe List</Text>
             <Button
           // style= {styles.addButtonStyleNavigation}
           onPress={() => this.props.navigation.navigate('AddRecipe')}

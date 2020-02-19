@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { Image, Text } from "react-native";
 import Login from "./Component/LoginComponent";
 import Recipe from "./Component/RecipeListComponent";
+import MapViewComponent from "./Component/MapViewComponent";
 import AddRecipe from "./Component/AddRecipeComponent";
 import DetailRecipe from "./Component/DetailRecipeComponent";
 import { createAppContainer, createSwitchNavigator } from "react-navigation";
@@ -12,6 +13,7 @@ import {
 } from "react-navigation-tabs";
 import { createDrawerNavigator } from "react-navigation-drawer";
 import Setting from "./Component/SettingComponent"
+import ImageUpload from "./Component/ImageUpload"
 
 const tabbarNavigator = createBottomTabNavigator({
   Recipe: {
@@ -20,6 +22,14 @@ const tabbarNavigator = createBottomTabNavigator({
         <Image style={{ height: 20, width: 20, tintColor: tintColor }} source={require('./assets/cooking.png')}></Image>
       ),
       title: 'Cooking List'
+    }
+  },
+  MapView: {
+    screen: MapViewComponent, navigationOptions: {
+      tabBarIcon: ({ tintColor }) => (
+        <Image style={{ height: 20, width: 20, tintColor: tintColor }} source={require('./assets/map.png')}></Image>
+      ),
+      title: 'Map'
     }
   },
   SettingComponent: {
@@ -40,23 +50,11 @@ const tabbarNavigator = createBottomTabNavigator({
   
 })
 
-// tabbarNavigator.navigationOptions = ({ navigation }) => {
-//   let { routeName } = navigation.state.routes[navigation.state.index];
-//   let title;
-//   if (routeName === 'home') {
-//     title = 'Home';
-//   } else if (routeName === 'profile') {
-//     title = 'Profile';
-//   }
-//   return {
-//     title,
-//   };
-// };
-
 const detailNavigation = createStackNavigator({
   tabbarNavigator,
   DetailRecipe: { screen: DetailRecipe , navigationOptions:{ ...TransitionPresets.SlideFromRightIOS}},
-  AddRecipe: { screen: AddRecipe}, //navigationOptions: { ...TransitionPresets.ModalPresentationIOS } 
+  AddRecipe: { screen: AddRecipe}// ,navigationOptions: { ...TransitionPresets.ModalPresentationIOS }
+  // ImageUpload: { screen: ImageUpload}, //navigationOptions: { ...TransitionPresets.ModalPresentationIOS }  
 });
 
 const navigate = createSwitchNavigator({
