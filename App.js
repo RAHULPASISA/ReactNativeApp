@@ -13,7 +13,6 @@ import {
 } from "react-navigation-tabs";
 import { createDrawerNavigator } from "react-navigation-drawer";
 import Setting from "./Component/SettingComponent"
-import ImageUpload from "./Component/ImageUpload"
 
 const tabbarNavigator = createBottomTabNavigator({
   Recipe: {
@@ -53,8 +52,7 @@ const tabbarNavigator = createBottomTabNavigator({
 const detailNavigation = createStackNavigator({
   tabbarNavigator,
   DetailRecipe: { screen: DetailRecipe , navigationOptions:{ ...TransitionPresets.SlideFromRightIOS}},
-  AddRecipe: { screen: AddRecipe}// ,navigationOptions: { ...TransitionPresets.ModalPresentationIOS }
-  // ImageUpload: { screen: ImageUpload}, //navigationOptions: { ...TransitionPresets.ModalPresentationIOS }  
+  AddRecipe: { screen: AddRecipe , navigationOptions: { headerShown: false }}
 });
 
 const navigate = createSwitchNavigator({

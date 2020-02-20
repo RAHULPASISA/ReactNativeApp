@@ -14,6 +14,10 @@ import {
   Image
 } from "react-native";
 import {Platform} from 'react-native';
+import { Container, Header,Left,Right,Icon, Body, Title } from "native-base";
+import * as Font from "expo-font";
+import { Ionicons } from '@expo/vector-icons';
+import { getStatusBarHeight } from 'react-native-status-bar-height';
 
 export default class RecipeListComponent extends Component {
  
@@ -49,10 +53,8 @@ export default class RecipeListComponent extends Component {
     //   },
     headerRight: () => (
         <Button
-          // style= {styles.addButtonStyleNavigation}
           onPress={() => navigation.navigate('AddRecipe')}
           title="Add"
-          //color="black"
         />
       )
     
@@ -87,10 +89,15 @@ export default class RecipeListComponent extends Component {
       });
   };
 
-  componentDidMount() {
+  async componentDidMount() {
+    await Font.loadAsync({
+      'Roboto': require('native-base/Fonts/Roboto.ttf'),
+      'Roboto_medium': require('native-base/Fonts/Roboto_medium.ttf'),
+      ...Ionicons.font,
+    })
     return this.Recipe();
   }
-
+  
   renderItem = ({ item }) => {
     return (
       <TouchableWithoutFeedback onPress={ () => this.actionOnRow(item)}>
@@ -169,9 +176,20 @@ export default class RecipeListComponent extends Component {
       );
     } else {
       return (
+        <Container style={styles.topHeader}>
+            <Header style={{alignItems: "center",
+                justifyContent: "center"}}>
+              <Left></Left>
+              <Body>
+              <Title>Recipe List</Title>
+              </Body>
+              <Right >
+              <Icon name="ios-add" style={styles.topHeader} onPress={() => this.props.navigation.navigate('AddRecipe')} > </Icon>
+              </Right>
+            </Header>
         <View style={styles.container}>
           <SafeAreaView style={{ flex:1,backgroundColor:'white'}}>
-          <View style={{flexDirection:"row", backgroundColor:"white", height:44,justifyContent:'center',alignItems:'center',borderBottomWidth:1,borderBottomColor:'rgba(231,231,232,1)'}}>
+          {/* <View style={{flexDirection:"row", backgroundColor:"white", height:44,justifyContent:'center',alignItems:'center',borderBottomWidth:1,borderBottomColor:'rgba(231,231,232,1)'}}>
             <Text style={{color:'black',flex:1,paddingLeft:50,textAlign:'center',alignSelf:'center',backgroundColor:"white", fontSize: 18,fontWeight:'bold'}}>Recipe List</Text>
             <Button
           // style= {styles.addButtonStyleNavigation}
@@ -179,7 +197,7 @@ export default class RecipeListComponent extends Component {
           title="Add"
           //color="black"
         />
-          </View>
+          </View> */}
           <FlatList
             data={this.state.dataSource}
             renderItem={this.renderItem}
@@ -195,6 +213,7 @@ export default class RecipeListComponent extends Component {
           />
           </SafeAreaView>
         </View>
+            </Container>
       );
     }
   }
@@ -235,6 +254,18 @@ const styles = StyleSheet.create({
     height: 80,
     justifyContent: 'flex-start', 
     alignItems: 'flex-start',
-   }
+   },
+   topHeader: {
+    ...Platform.select({
+      ios: {
+        color:'rgba(34,119,255,1)'
+      },
+      android: {
+        color:'white',
+        paddingTop: getStatusBarHeight(),
+        height: 54 + getStatusBarHeight(),
+      }
+  }),
+  },
 });
 

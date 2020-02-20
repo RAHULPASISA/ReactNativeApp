@@ -12,6 +12,8 @@ import { TextInput } from "react-native-gesture-handler";
 import { Dropdown } from "react-native-material-dropdown";
 import * as ImagePicker from "expo-image-picker";
 import * as Permissions from "expo-permissions";
+import { Container, Header,Left,Right,Icon, Body, Title } from "native-base";
+import { getStatusBarHeight } from "react-native-status-bar-height";
 
 const complexityData = [
   {
@@ -30,18 +32,14 @@ export default class AddRecipeComponent extends Component {
     super();
     this.state = {
       isLoading: false,
-      name: "Pizza",
-      preparationTime: "1 Hour",
-      serves: "4",
+      name: "",
+      preparationTime: "",
+      serves: "",
       complexity: complexityData[0].value,
       token: null,
       image: null
     };
   }
-
-  static navigationOptions = {
-    headers:null
-  };
 
   getImagePermissions = async () => {
     const { status } = await Permissions.askAsync(Permissions.CAMERA_ROLL);
@@ -176,8 +174,20 @@ showLoadingIndicator() {
 }
 
   render() {
+    const { goBack } = this.props.navigation;
     return (
-      <View style={styles.container}>
+      <Container style={styles.topHeader}>
+      <Header style={{alignItems: "center",
+                justifyContent: "center"}}> 
+            <Left>
+              <Icon name="ios-arrow-back" style={[styles.topHeader,{paddingLeft:20}]} onPress={() => goBack()}></Icon>
+            </Left>
+            <Body>
+              <Title>Add Recipe</Title>
+            </Body>
+            <Right></Right>
+          </Header>
+          <View style={styles.container}>
         <TouchableOpacity
           onPress={() => {
             this.getImagePermissions();
@@ -195,7 +205,7 @@ showLoadingIndicator() {
               }}
             >
               <Image
-                source={require("../assets/add_Image.png")}
+                source={require("../assets/Recipe.jpg")}
                 style={{ width: "100%", height: "100%", resizeMode: "cover" }}
               />
             </View>
@@ -209,14 +219,15 @@ showLoadingIndicator() {
           style={styles.textInputStyle}
         ></TextInput>
         <TextInput
-          placeholder={"Enter preparation Time"}
+          placeholder={"Enter preparation Time (Ex: 1 Min)"}
           value={this.state.preparationTime}
           onChangeText={preparationTime => this.setState({ preparationTime })}
           style={styles.textInputStyle}
           style={[styles.textInputStyle, styles.spaceBetweenTxtfield]}
         ></TextInput>
         <TextInput
-          placeholder={"Servers"}
+          placeholder={"Servers (Ex: 4)"}
+          keyboardType='numeric'
           value={this.state.serves}
           onChangeText={serves => this.setState({ serves })}
           style={[styles.textInputStyle, , styles.spaceBetweenTxtfield]}
@@ -246,6 +257,7 @@ showLoadingIndicator() {
           </Text>
         </TouchableOpacity>
       </View>
+      </Container>
     );
   }
 }
@@ -278,5 +290,17 @@ const styles = StyleSheet.create({
     borderColor: "black",
     borderRadius: 10,
     top: 60
-  }
+  },
+  topHeader: {
+    ...Platform.select({
+      ios: {
+        color:'rgba(34,119,255,1)',
+      },
+      android: {
+        color:'white',
+        paddingTop: getStatusBarHeight(),
+        height: 54 + getStatusBarHeight(),
+      }
+  }),
+  },
 });
