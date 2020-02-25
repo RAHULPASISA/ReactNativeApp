@@ -14,6 +14,7 @@ import * as ImagePicker from "expo-image-picker";
 import * as Permissions from "expo-permissions";
 import { Container, Header,Left,Right,Icon, Body, Title } from "native-base";
 import { getStatusBarHeight } from "react-native-status-bar-height";
+import { connect } from 'react-redux'
 
 const complexityData = [
   {
@@ -27,7 +28,7 @@ const complexityData = [
   }
 ];
 
-export default class AddRecipeComponent extends Component {
+ class AddRecipeComponent extends Component {
   constructor() {
     super();
     this.state = {
@@ -36,7 +37,6 @@ export default class AddRecipeComponent extends Component {
       preparationTime: "",
       serves: "",
       complexity: complexityData[0].value,
-      token: null,
       image: null
     };
   }
@@ -99,8 +99,7 @@ showLoadingIndicator() {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        Authorization:
-          "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6Mn0.MGBf-reNrHdQuwQzRDDNPMo5oWv4GlZKlDShFAAe16s"
+        Authorization: 'Bearer ' + this.props.token
       },
       body: JSON.stringify({
         name: this.state.name,
@@ -152,7 +151,7 @@ showLoadingIndicator() {
     fetch('http://35.160.197.175:3006/api/v1/recipe/add-update-recipe-photo',{
         method: 'POST',
         headers: {
-            'Authorization': 'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6Mn0.MGBf-reNrHdQuwQzRDDNPMo5oWv4GlZKlDShFAAe16s',
+            'Authorization': 'Bearer ' + this.props.token,
             'Content-Type' : 'application/json'
         },
         body: formData
@@ -171,6 +170,10 @@ showLoadingIndicator() {
     }).catch((error) => {
         Alert.alert('Upload Image Failed')
     })
+}
+
+componentDidMount() {
+  console.log('ADDRECIPEToken',this.props.token)
 }
 
   render() {
@@ -222,12 +225,11 @@ showLoadingIndicator() {
           placeholder={"Enter preparation Time (Ex: 1 Min)"}
           value={this.state.preparationTime}
           onChangeText={preparationTime => this.setState({ preparationTime })}
-          style={styles.textInputStyle}
           style={[styles.textInputStyle, styles.spaceBetweenTxtfield]}
         ></TextInput>
         <TextInput
           placeholder={"Servers (Ex: 4)"}
-          keyboardType='numeric'
+          keyboardType='default'
           value={this.state.serves}
           onChangeText={serves => this.setState({ serves })}
           style={[styles.textInputStyle, , styles.spaceBetweenTxtfield]}
@@ -304,3 +306,9 @@ const styles = StyleSheet.create({
   }),
   },
 });
+
+
+const mapStateToProps = (state) => {
+  return { token: state.token }
+}
+export default connect(mapStateToProps)(AddRecipeComponent)

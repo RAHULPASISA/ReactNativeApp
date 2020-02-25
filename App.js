@@ -13,6 +13,8 @@ import {
 } from "react-navigation-tabs";
 import { createDrawerNavigator } from "react-navigation-drawer";
 import Setting from "./Component/SettingComponent"
+import {createStore} from 'redux';
+import {Provider} from 'react-redux';
 
 const tabbarNavigator = createBottomTabNavigator({
   Recipe: {
@@ -63,6 +65,25 @@ const navigate = createSwitchNavigator({
   detailNavigation
 });
 
-const App = createAppContainer(navigate);
+const AppContainer = createAppContainer(navigate);
 
-export default App;
+const initalSate = {
+  token: ''
+}
+const reducer = (state=initalSate,action) => {
+  switch (action.type) {
+      case 'Token':
+        return {token : action.token};
+      default:
+        return {token : action.token};
+  }
+}
+const store = createStore(reducer)
+
+export default function App() {
+  return (
+  <Provider store={store}>
+    <AppContainer/>
+  </Provider>
+    );
+}

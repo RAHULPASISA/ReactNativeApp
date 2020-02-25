@@ -18,53 +18,54 @@ import { Container, Header,Left,Right,Icon, Body, Title } from "native-base";
 import * as Font from "expo-font";
 import { Ionicons } from '@expo/vector-icons';
 import { getStatusBarHeight } from 'react-native-status-bar-height';
+import { connect } from 'react-redux'
 
-export default class RecipeListComponent extends Component {
+ class RecipeListComponent extends Component {
  
   constructor(props) {
     super(props);
     this.state = {
       isLoading: true,
       dataSource: [],
-      isRefreshing: false
+      isRefreshing: false,
     };
   }
 
-  static navigationOptions =  ({ navigation })=> {
-    return {
-    title: 'Recipe List',
-    headerTitleAlign: 'center',
-    headerBackImage: null,
-    headerBackTitleVisible: false,
-    headerRightImage: (
-      <Image
-        style={StyleSheet.absoluteFill}
-        source={{ uri: 'http://35.160.197.175:3006/uploads/d3da38ab-df97-49a8-9485-8955eb0deb80.jpg' }}
-      />
-    ),
-    // headerStyle: {
-    //     height: 100,
-    //     backgroundColor: 'rgba(240, 240, 246, 1)',
-    //   },
-    //   headerTintColor: 'black',
-    //   headerTitleStyle: {
-    //     fontFamily: 'TimesNewRomanPS-BoldMT',
-    //     fontSize: 30
-    //   },
-    headerRight: () => (
-        <Button
-          onPress={() => navigation.navigate('AddRecipe')}
-          title="Add"
-        />
-      )
+//   static navigationOptions =  ({ navigation })=> {
+//     return {
+//     title: 'Recipe List',
+//     headerTitleAlign: 'center',
+//     headerBackImage: null,
+//     headerBackTitleVisible: false,
+//     headerRightImage: (
+//       <Image
+//         style={StyleSheet.absoluteFill}
+//         source={{ uri: 'http://35.160.197.175:3006/uploads/d3da38ab-df97-49a8-9485-8955eb0deb80.jpg' }}
+//       />
+//     ),
+//     // headerStyle: {
+//     //     height: 100,
+//     //     backgroundColor: 'rgba(240, 240, 246, 1)',
+//     //   },
+//     //   headerTintColor: 'black',
+//     //   headerTitleStyle: {
+//     //     fontFamily: 'TimesNewRomanPS-BoldMT',
+//     //     fontSize: 30
+//     //   },
+//     headerRight: () => (
+//         <Button
+//           onPress={() => navigation.navigate('AddRecipe')}
+//           title="Add"
+//         />
+//       )
     
-    }
-}
+//     }
+// }
 
   Recipe = () => {
     const url = "http://35.160.197.175:3006/api/v1/recipe/feeds";
     const tokenFromLogin =
-      'Bearer ' + this.props.navigation.getParam('token')   
+      'Bearer ' + this.props.token
 
     fetch(url, {
       method: "GET",
@@ -90,6 +91,7 @@ export default class RecipeListComponent extends Component {
   };
 
   async componentDidMount() {
+    console.log('RahulPasi',this.props.token)
     await Font.loadAsync({
       'Roboto': require('native-base/Fonts/Roboto.ttf'),
       'Roboto_medium': require('native-base/Fonts/Roboto_medium.ttf'),
@@ -269,3 +271,7 @@ const styles = StyleSheet.create({
   },
 });
 
+const mapStateToProps = (state) => {
+  return { token: state.token }
+}
+export default connect(mapStateToProps)(RecipeListComponent)

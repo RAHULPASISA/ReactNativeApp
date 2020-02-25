@@ -9,9 +9,10 @@ import {
   TouchableOpacity,
   Image
 } from "react-native";
-import Recipe from './RecipeListComponent'
+import {connect} from 'react-redux'
+import { bindActionCreators } from 'redux';
 
-export default class LoginComponent extends Component {
+ class LoginComponent extends Component {
   constructor() {
     super();
     this.state = { username: "jm1@example.com", password: "jay@123", token: null };
@@ -54,8 +55,10 @@ export default class LoginComponent extends Component {
           ]);
         } else {
           console.log(responseJSON.token)
-          this.setState({token:responseJSON.token});
-          this.props.navigation.navigate('Recipe',{token: this.state.token})
+          // this.setState({token:responseJSON.token});
+          this.props.token(responseJSON.token)
+          // this.props.navigation.navigate('Recipe',{token: this.state.token})
+          this.props.navigation.navigate('Recipe')
       try {
             // var email = responseJSON["email"];
             // if (email) {
@@ -200,3 +203,21 @@ const styles = StyleSheet.create({
     borderRadius: 10,
   }
 });
+
+
+function mapDispatchToProps(dispatch) {
+  return {
+      token: (value) => dispatch({
+          type: 'Token',
+          token: value
+      })
+  }
+}
+
+const mapStatetoProps = (state) =>{
+  return  {
+      token : state.token
+  }
+}
+
+export default connect(mapStatetoProps,mapDispatchToProps)(LoginComponent)
