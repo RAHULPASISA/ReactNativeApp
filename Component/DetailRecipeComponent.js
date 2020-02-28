@@ -15,15 +15,15 @@ export default class DetailRecipeComponent extends Component {
   }
 
   static navigationOptions = {
-    title: "Detail Recipe",
+    title: "Detail Recipe"
   };
 
   checkImageURLNull(url) {
     console.log(url);
     if (url == null) {
-      return require('../assets/Cook.gif')
+      return require("../assets/Cook.gif");
     } else {
-      return {uri: url};
+      return { uri: url };
     }
   }
 

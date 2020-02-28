@@ -33,14 +33,14 @@ const tabbarNavigator = createBottomTabNavigator({
       title: 'Map'
     }
   },
-  SettingComponent: {
-    screen: Setting, navigationOptions: {
-      tabBarIcon: ({ tintColor }) => (
-        <Image style={{ height: 20, width: 20, tintColor: tintColor }} source={require('./assets/settings.png')}></Image>
-      ),
-      title: 'Settings'
-    }
-  }
+  // SettingComponent: {
+  //   screen: Setting, navigationOptions: {
+  //     tabBarIcon: ({ tintColor }) => (
+  //       <Image style={{ height: 20, width: 20, tintColor: tintColor }} source={require('./assets/settings.png')}></Image>
+  //     ),
+  //     title: 'Settings'
+  //   }
+  // }
 }, {
   tabBarOptions: {
     activeTintColor: 'rgba(0,182,524,1)',

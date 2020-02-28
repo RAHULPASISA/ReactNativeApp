@@ -9,13 +9,16 @@ import {
   TouchableOpacity,
   Image
 } from "react-native";
-import {connect} from 'react-redux'
-import { bindActionCreators } from 'redux';
+import { connect } from "react-redux";
 
- class LoginComponent extends Component {
+class LoginComponent extends Component {
   constructor() {
     super();
-    this.state = { username: "jm1@example.com", password: "jay@123", token: null };
+    this.state = {
+      username: "jm1@example.com",
+      password: "jay@123",
+      token: null
+    };
   }
 
   Login = () => {
@@ -36,7 +39,7 @@ import { bindActionCreators } from 'redux';
         } else {
         }
       })
-      .catch((error) => console.warn("fetch error:", error))
+      .catch(error => console.warn("fetch error:", error))
       .then(responseJSON => {
         this.setState({ showProcess: false });
         if (this.state.username.length == 0) {
@@ -54,12 +57,11 @@ import { bindActionCreators } from 'redux';
             }
           ]);
         } else {
-          console.log(responseJSON.token)
-          // this.setState({token:responseJSON.token});
-          this.props.token(responseJSON.token)
+          console.log(responseJSON.token);
+          this.props.token(responseJSON.token);
           // this.props.navigation.navigate('Recipe',{token: this.state.token})
-          this.props.navigation.navigate('Recipe')
-      try {
+          this.props.navigation.navigate("Recipe");
+          try {
             // var email = responseJSON["email"];
             // if (email) {
             //   console.log("success: ", responseJSON);
@@ -76,7 +78,8 @@ import { bindActionCreators } from 'redux';
             // ]);
           } catch (err) {
             console.log("error");
-            var message = "There was an error with your E-Mail/Password. Please try again.";
+            var message =
+              "There was an error with your E-Mail/Password. Please try again.";
             var title = "Failure";
             Alert.alert(title, message, [
               {
@@ -90,56 +93,53 @@ import { bindActionCreators } from 'redux';
   };
 
   render() {
-    // if (this.state.token != null) {
-    //  return <Recipe token={this.state.token} />
-    // }else {
-      return (
-        <ImageBackground
-          source={require('../assets/Cook.gif')}
-          style={{ width: "100%", height: "100%", resizeMode: "resize" }}
-        >
-          <View style={styles.container}>
-            <View style={styles.firstView}>
-              <Image
-                source={require('../assets/logo.png')}
-                style={{ width: 140, height: 125 }}
-              />
-            </View>
-            <View style={styles.secondView}>
-              <TextInput
-                placeholder="Email"
-                placeholderTextColor="#FFF"
-                keyboardType="email-address"
-                value={this.state.username}
-                onChangeText={username => this.setState({ username })}
-                style={styles.usernameTextInput}
-              ></TextInput>
-              <TextInput
-                placeholder="Password"
-                placeholderTextColor="#FFF"
-                secureTextEntry= {true}
-                value={this.state.password}
-                onChangeText={password => this.setState({ password })}
-                style={styles.passwordTextInput}
-              ></TextInput>
-            </View>
-            <View style={styles.thirdView}>
-              <TouchableOpacity onPress={this.Login} style={styles.buttonLogin}>
-                <Text   
-                  style={{
-                    color: "white",
-                    justifyContent: "center",
-                    fontSize: 20,
-                    fontWeight: "bold"
-                  }}
-                >
-                Login
-                </Text>
-              </TouchableOpacity>
-            </View>
+    return (
+      <ImageBackground
+        source={require("../assets/Cook.gif")}
+        style={{ width: "100%", height: "100%", resizeMode: "resize" }}
+      >
+        <View style={styles.container}>
+          <View style={styles.firstView}>
+            <Image
+              source={require("../assets/logo.png")}
+              style={{ width: 140, height: 125 }}
+            />
           </View>
-        </ImageBackground>
-      );
+          <View style={styles.secondView}>
+            <TextInput
+              placeholder="Email"
+              placeholderTextColor="#FFF"
+              keyboardType="email-address"
+              value={this.state.username}
+              onChangeText={username => this.setState({ username })}
+              style={styles.usernameTextInput}
+            ></TextInput>
+            <TextInput
+              placeholder="Password"
+              placeholderTextColor="#FFF"
+              secureTextEntry={true}
+              value={this.state.password}
+              onChangeText={password => this.setState({ password })}
+              style={styles.passwordTextInput}
+            ></TextInput>
+          </View>
+          <View style={styles.thirdView}>
+            <TouchableOpacity onPress={this.Login} style={styles.buttonLogin}>
+              <Text
+                style={{
+                  color: "white",
+                  justifyContent: "center",
+                  fontSize: 20,
+                  fontWeight: "bold"
+                }}
+              >
+                Login
+              </Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+      </ImageBackground>
+    );
     // }
   }
 }
@@ -148,7 +148,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     alignContent: "center",
-    justifyContent: "center",
+    justifyContent: "center"
   },
   firstView: {
     flex: 0.3,
@@ -167,7 +167,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     flexDirection: "column-reverse",
-    top: 150,
+    top: 150
   },
   loginTextStyle: {
     fontSize: 50,
@@ -200,24 +200,24 @@ const styles = StyleSheet.create({
     alignItems: "center",
     borderWidth: 1,
     borderColor: "white",
-    borderRadius: 10,
+    borderRadius: 10
   }
 });
 
-
 function mapDispatchToProps(dispatch) {
   return {
-      token: (value) => dispatch({
-          type: 'Token',
-          token: value
+    token: value =>
+      dispatch({
+        type: "Token",
+        token: value
       })
-  }
+  };
 }
 
-const mapStatetoProps = (state) =>{
-  return  {
-      token : state.token
-  }
-}
+const mapStatetoProps = state => {
+  return {
+    token: state.token
+  };
+};
 
-export default connect(mapStatetoProps,mapDispatchToProps)(LoginComponent)
+export default connect(mapStatetoProps, mapDispatchToProps)(LoginComponent);

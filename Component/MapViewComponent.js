@@ -1,30 +1,35 @@
 import React, { Component } from "react";
-import { Text, View, StyleSheet, Alert,TouchableOpacity } from "react-native";
-import MapView, { Marker, Polyline,PROVIDER_GOOGLE } from "react-native-maps";
+import {
+  Text,
+  View,
+  StyleSheet,
+  Alert,
+  TouchableOpacity,
+  Image
+} from "react-native";
+import MapView, { Marker, Polyline, PROVIDER_GOOGLE } from "react-native-maps";
 import { SafeAreaView } from "react-navigation";
 import { Dimensions } from "react-native";
-import { Container, Header, Left, Right, Icon, Body, Title, Button } from "native-base";
+import { Container, Header, Left, Right, Icon, Body, Title } from "native-base";
 import { getStatusBarHeight } from "react-native-status-bar-height";
 
 const screenWidth = Math.round(Dimensions.get("window").width);
 const screenHeight = Math.round(Dimensions.get("window").height);
 
 export default class MapViewComponent extends Component {
-
   constructor(props) {
     super(props);
     this.state = {
-      coords: null,
+      coords: null
     };
   }
 
-   componentDidMount() {
+  componentDidMount() {
+    console.disableYellowBox = true;
     const { status } = this.state;
     console.log(status);
     this._watchLocation();
   }
-
-  // Start: Current Location of Driver
 
   _watchLocation = async () => {
     await navigator.geolocation.watchPosition(position => {
@@ -56,39 +61,37 @@ export default class MapViewComponent extends Component {
           <Right></Right>
         </Header>
         <SafeAreaView>
-          <View style={{ flex: 1}}>
+          <View style={{ flex: 1 }}>
             <MapView
               provider={PROVIDER_GOOGLE}
               style={styles.map}
-              ref={ map => { this.map = map }}
+              ref={map => {
+                this.map = map;
+              }}
               showsUserLocation={true}
-             // followsUserLocation={true}
-            //  customMapStyle = {require('./CustomMap.json')}
+              // followsUserLocation={true}
+              //  customMapStyle = {require('./CustomMap.json')}
               showsMyLocationButton={true}
               //showsPointsOfInterest={true}
-           //   showsCompass={true}
+              //   showsCompass={true}
               initialRegion={{
                 latitude: 23.029213,
                 longitude: 72.570387,
-                latitudeDelta:10.0,
-                longitudeDelta: 10.0,
+                latitudeDelta: 10.0,
+                longitudeDelta: 10.0
               }}
             >
               <Marker
                 coordinate={{ latitude: 23.029213, longitude: 72.570387 }}
                 title="Solution Analysts Pvt Ltd"
-                description="Solution Analysts Pvt Ltd, 101, Sankalp Iconic, Opp. Vikram Nagar, Ambli - Bopal Road, Iskcon Cross Road, Ahmedabad, Gujarat" 
+                description="Solution Analysts Pvt Ltd, 101, Sankalp Iconic, Opp. Vikram Nagar, Ambli - Bopal Road, Iskcon Cross Road, Ahmedabad, Gujarat"
                 onPress={() => {
                   Alert.alert("Ahmedabad", "Solution Analysts Pvt Ltd");
-                  // this._getLocation()
                 }}
-              />  
+              />
               <Polyline
                 coordinates={[
                   { latitude: 23.029213, longitude: 72.570387 },
-                  // { latitude: 23.109144, longitude: 71.919733 },
-                  // { latitude: 23.015004, longitude: 71.41856 },
-                  // { latitude: 23.019386, longitude: 71.075313 },
                   { latitude: 23.240952, longitude: 69.672179 },
                   { latitude: 23.302622, longitude: 69.682503 }
                 ]}
@@ -104,8 +107,22 @@ export default class MapViewComponent extends Component {
                 strokeWidth={5}
               />
             </MapView>
-            <TouchableOpacity style={{ height:50 ,width:50,backgroundColor:'white',position:'absolute',alignSelf:'flex-end'}} onPress={() => {this._getLocation()}}>
-            <Text>Current location</Text>
+            <TouchableOpacity
+              style={{
+                height: 50,
+                width: 50,
+                backgroundColor: "clear",
+                position: "absolute",
+                alignSelf: 'flex-end'
+              }}
+              onPress={() => {
+                this._getLocation();
+              }}
+            >
+              <Image
+                style={{ width: 60, height: 60 }}
+                source={require("../assets/CurrentLocation.png")}
+              />
             </TouchableOpacity>
           </View>
         </SafeAreaView>
@@ -129,4 +146,3 @@ const styles = StyleSheet.create({
     })
   }
 });
-
