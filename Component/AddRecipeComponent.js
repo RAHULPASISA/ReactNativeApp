@@ -260,7 +260,7 @@ class AddRecipeComponent extends Component {
               }
             }}
           />
-          <ScrollView style={{flexGrow: 1, backgroundColor: 'red'}}>
+          {/* <ScrollView style={{flexGrow: 1, backgroundColor: 'red'}}> */}
           <TouchableOpacity
             // onPress={() => {
             //   this.getImagePermissions();
@@ -274,14 +274,13 @@ class AddRecipeComponent extends Component {
             }}
           >
             {this.state.image ? (
-              <Image source={{ uri: this.state.image }} style={{ flex: 1 }} />
+              <Image source={{ uri: this.state.image }} style={{ flex: 1,borderRadius: 30 }} />
             ) : (
               <View
                 style={{
                   flex: 1,
                   alignItems: "center",
                   justifyContent: "center",
-                  borderRadius: 30
                 }}
               >
                 <Image
@@ -290,6 +289,7 @@ class AddRecipeComponent extends Component {
                     width: "100%",
                     height: "100%",
                     resizeMode: "cover",
+                    borderRadius: 30
                   }}
                 />
               </View>
@@ -327,7 +327,7 @@ class AddRecipeComponent extends Component {
               data={complexityData}
             />
           </View>
-          </ScrollView>
+          {/* </ScrollView> */}
           <TouchableOpacity
             onPress={() => {
               this.checkAllDetailFilled();
